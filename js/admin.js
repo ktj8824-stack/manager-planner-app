@@ -1867,14 +1867,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const artists = await window.hqStore.getArtists();
 
     let html = `
+      <!-- 요일 헤더 (컴팩트 슬림 바) -->
+      <div style="display:grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap:8px; width:100%; box-sizing:border-box; margin-bottom:8px;">
+        <div style="text-align:center; padding:6px 0; font-size:12.5px; font-weight:800; color:#ef4444; background:var(--bg-card); border-radius:8px; border:1px solid var(--border-color); min-width:0; box-sizing:border-box;">일</div>
+        <div style="text-align:center; padding:6px 0; font-size:12.5px; font-weight:700; color:var(--text-dim); background:var(--bg-card); border-radius:8px; border:1px solid var(--border-color); min-width:0; box-sizing:border-box;">월</div>
+        <div style="text-align:center; padding:6px 0; font-size:12.5px; font-weight:700; color:var(--text-dim); background:var(--bg-card); border-radius:8px; border:1px solid var(--border-color); min-width:0; box-sizing:border-box;">화</div>
+        <div style="text-align:center; padding:6px 0; font-size:12.5px; font-weight:700; color:var(--text-dim); background:var(--bg-card); border-radius:8px; border:1px solid var(--border-color); min-width:0; box-sizing:border-box;">수</div>
+        <div style="text-align:center; padding:6px 0; font-size:12.5px; font-weight:700; color:var(--text-dim); background:var(--bg-card); border-radius:8px; border:1px solid var(--border-color); min-width:0; box-sizing:border-box;">목</div>
+        <div style="text-align:center; padding:6px 0; font-size:12.5px; font-weight:700; color:var(--text-dim); background:var(--bg-card); border-radius:8px; border:1px solid var(--border-color); min-width:0; box-sizing:border-box;">금</div>
+        <div style="text-align:center; padding:6px 0; font-size:12.5px; font-weight:800; color:#3b82f6; background:var(--bg-card); border-radius:8px; border:1px solid var(--border-color); min-width:0; box-sizing:border-box;">토</div>
+      </div>
+      <!-- 월간 날짜 그리드 -->
       <div style="display:grid; grid-template-columns: repeat(7, minmax(0, 1fr)); grid-auto-rows: minmax(110px, auto); gap:8px; width:100%; box-sizing:border-box;">
-        <div style="text-align:center; padding:10px 0; font-size:13px; font-weight:700; color:var(--accent-pink); background:var(--bg-card); border-radius:8px; border:1px solid var(--border-color); min-width:0; box-sizing:border-box;">일</div>
-        <div style="text-align:center; padding:10px 0; font-size:13px; font-weight:700; color:var(--text-dim); background:var(--bg-card); border-radius:8px; border:1px solid var(--border-color); min-width:0; box-sizing:border-box;">월</div>
-        <div style="text-align:center; padding:10px 0; font-size:13px; font-weight:700; color:var(--text-dim); background:var(--bg-card); border-radius:8px; border:1px solid var(--border-color); min-width:0; box-sizing:border-box;">화</div>
-        <div style="text-align:center; padding:10px 0; font-size:13px; font-weight:700; color:var(--text-dim); background:var(--bg-card); border-radius:8px; border:1px solid var(--border-color); min-width:0; box-sizing:border-box;">수</div>
-        <div style="text-align:center; padding:10px 0; font-size:13px; font-weight:700; color:var(--text-dim); background:var(--bg-card); border-radius:8px; border:1px solid var(--border-color); min-width:0; box-sizing:border-box;">목</div>
-        <div style="text-align:center; padding:10px 0; font-size:13px; font-weight:700; color:var(--text-dim); background:var(--bg-card); border-radius:8px; border:1px solid var(--border-color); min-width:0; box-sizing:border-box;">금</div>
-        <div style="text-align:center; padding:10px 0; font-size:13px; font-weight:700; color:var(--accent-cyan); background:var(--bg-card); border-radius:8px; border:1px solid var(--border-color); min-width:0; box-sizing:border-box;">토</div>
     `;
 
     // 이전 달 빈 칸 (기본 min-height 110px, 그리드 행 높이에 자동 동기화)
@@ -3227,34 +3231,38 @@ document.addEventListener('DOMContentLoaded', () => {
     if (formSendMsg) {
       formSendMsg.addEventListener('submit', (e) => {
         e.preventDefault();
-        const targetId = document.getElementById('msg-target-manager').value;
+        const targetId   = document.getElementById('msg-target-manager').value;
         const targetName = document.getElementById('msg-target-manager').options[document.getElementById('msg-target-manager').selectedIndex].text;
-        const content = document.getElementById('msg-content').value;
-        const isUrgent = document.getElementById('msg-is-urgent').checked;
+        const title      = (document.getElementById('msg-title')?.value || '').trim();
+        const content    = document.getElementById('msg-content').value.trim();
+        const isUrgent   = document.getElementById('msg-is-urgent').checked;
 
-        const notiData = {
-          id: 'noti_' + Date.now(),
-          targetId: targetId,
-          content: content,
-          isUrgent: isUrgent,
-          createdAt: new Date().toISOString()
-        };
-
-        // LocalStorage 저장
-        const hqNotiKey = 'HQ_NOTIFICATIONS_V2';
-        let notis = JSON.parse(localStorage.getItem(hqNotiKey) || '[]');
-        notis.push(notiData);
-        localStorage.setItem(hqNotiKey, JSON.stringify(notis));
-
-        // 브로드캐스트 전송
-        if (window.hqStore && window.hqStore.broadcast) {
-          window.hqStore.broadcast.postMessage({
-            type: 'NEW_HQ_MESSAGE',
-            payload: notiData
-          });
+        if (!content) {
+          alert('공지 내용을 입력해 주세요.');
+          return;
         }
 
-        alert(`[${targetName}]에게 메시지를 발송했습니다.`);
+        // AdminData.addBroadcast()로 localStorage 저장 + BroadcastChannel 전송
+        if (window.hqStore && typeof window.hqStore.addBroadcast === 'function') {
+          window.hqStore.addBroadcast({ title, content, isUrgent, targetId });
+        } else {
+          // fallback: 직접 저장
+          const notiData = {
+            id: 'noti_' + Date.now(),
+            title: title || (isUrgent ? '🚨 긴급 공지' : '📢 본사 공지'),
+            content, isUrgent, targetId,
+            createdAt: new Date().toISOString()
+          };
+          const key = 'HQ_NOTIFICATIONS_V2';
+          let notis = JSON.parse(localStorage.getItem(key) || '[]');
+          notis.push(notiData);
+          localStorage.setItem(key, JSON.stringify(notis));
+          if (window.hqStore?.broadcast) {
+            window.hqStore.broadcast.postMessage({ type: 'NEW_HQ_MESSAGE', payload: notiData });
+          }
+        }
+
+        alert(`✅ [${targetName}]에게 ${isUrgent ? '긴급 공지' : '공지'}가 발송되었습니다.`);
         Admin.closeSendMsgModal();
       });
     }

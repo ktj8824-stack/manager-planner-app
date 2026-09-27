@@ -1,4 +1,4 @@
-const CACHE_NAME = 'managerplanner-v102-cache';
+const CACHE_NAME = 'managerplanner-v103-cache';
 const ASSETS = [
   './',
   './index.html',
