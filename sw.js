@@ -1,7 +1,7 @@
 /* App-shell cache only. HQ admin pages/scripts, APIs and third-party requests are never intercepted. Shared admin-data.js is an app dependency. */
 const CACHE_PREFIX = 'managerplanner-app:' + encodeURIComponent(self.registration.scope) + ':';
-const CACHE_NAME = CACHE_PREFIX + 'v182-css24-js181';
-const LEGACY_CACHES = ["managerplanner-v103-cache"];
+const CACHE_NAME = CACHE_PREFIX + 'v183-css24-js182';
+const LEGACY_CACHES = ["managerplanner-v103-cache", CACHE_PREFIX + 'v182-css24-js181'];
 const SCOPE_URL = new URL(self.registration.scope);
 // Versioned and unversioned URLs share an explicit, current-version key.
 // Unknown versions bypass this worker instead of receiving a stale asset.
@@ -76,55 +76,55 @@ const ASSET_ENTRIES = [
   ],
   [
     "js/admin-data.js",
-    "181"
+    "182"
   ],
   [
     "js/data.js",
-    "181"
+    "182"
   ],
   [
     "js/api.js",
-    "181"
+    "182"
   ],
   [
     "js/utils.js",
-    "181"
+    "182"
   ],
   [
     "js/home.js",
-    "181"
+    "182"
   ],
   [
     "js/timeline.js",
-    "181"
+    "182"
   ],
   [
     "js/register.js",
-    "181"
+    "182"
   ],
   [
     "js/login.js",
-    "181"
+    "182"
   ],
   [
     "js/onboarding.js",
-    "181"
+    "182"
   ],
   [
     "js/profile.js",
-    "181"
+    "182"
   ],
   [
     "js/upgrade.js",
-    "181"
+    "182"
   ],
   [
     "js/supabase-client.js",
-    "181"
+    "182"
   ],
   [
     "js/app.js",
-    "181"
+    "182"
   ]
 ];
 const ASSET_KEYS = new Map();
