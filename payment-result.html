@@ -74,7 +74,7 @@
     <div class="info-row" id="r-receipt-row" style="display:none;"><span>매출 전표</span><span id="r-receipt">—</span></div>
   </div>
   <button class="btn-primary" id="btn-va-confirm" style="display:none; margin-bottom:10px; background:linear-gradient(135deg,#059669,#10b981);" onclick="simulateVirtualDepositDone()">⚡ 입금 확인 시뮬레이션 (즉시 승인)</button>
-  <button class="btn-primary" id="btn-main" onclick="goToAdmin()">&#127968; 관제 포털로 이동</button>
+  <button class="btn-primary" id="btn-main" onclick="goToAdmin()">&#127968; 플래너 앱으로 이동</button>
   <button class="btn-secondary" id="btn-retry" onclick="goToPayment()" style="display:none;">&#8617; 다시 결제하기</button>
 </div>
 
@@ -210,7 +210,7 @@
 
     // 입금 확인 시뮬레이션 버튼 표시 (테스트용)
     btnVaConfirm.style.display = IS_DEV_HOST ? 'block' : 'none';
-    btnMain.textContent = (isProPlan || returnTarget === 'mobile') ? '플래너 앱으로 돌아가기' : '관제 포털로 돌아가기';
+    btnMain.textContent = (isProPlan || returnTarget === 'mobile') ? '플래너 앱으로 돌아가기' : '플래너 앱으로 돌아가기';
 
     // 스토리지에 입금 대기 상태 저장
     saveSubscriptionRecord(payData, 'waiting_deposit');
@@ -274,7 +274,7 @@
     launchConfetti();
 
     // 자동 이동 설정
-    const targetName = (isProPlan || returnTarget === 'mobile') ? '📱 로드플래너 앱으로 이동' : '관제 포털로 이동';
+    const targetName = (isProPlan || returnTarget === 'mobile') ? '📱 로드플래너 앱으로 이동' : '플래너 앱으로 이동';
     let count = 4;
     btnMain.textContent = `${targetName} (${count}초)`;
     const timer = setInterval(() => {
@@ -338,7 +338,7 @@
     titleEl.style.color = '#fca5a5';
     subEl.textContent   = errorMsg;
     btnRetry.style.display = 'block';
-    btnMain.textContent = (isProPlan || returnTarget === 'mobile') ? '플래너 앱으로 돌아가기' : '관제 포털로 돌아가기';
+    btnMain.textContent = (isProPlan || returnTarget === 'mobile') ? '플래너 앱으로 돌아가기' : '플래너 앱으로 돌아가기';
   }
 
   // 실행
@@ -348,7 +348,7 @@
     if (isProPlan || returnTarget === 'mobile') {
       window.location.href = 'index.html#profile';
     } else {
-      window.location.href = 'admin.html';
+      window.location.href = 'index.html#profile';
     }
   }
 
