@@ -1395,7 +1395,7 @@ const Home = {
       list.innerHTML = items.length ? items.map((d, i) => `
         <button type="button" class="ps-item" data-i="${i}">
           <b>${esc(d.place_name || '')}</b>
-          <span>${esc(d.road_address_name || d.address_name || '')}</span>
+          <span>${d.jibun_name ? '<em>도로명</em>' : ''}${esc(d.road_address_name || d.address_name || '')}</span>${d.jibun_name ? `<span><em>지번</em>${esc(String(d.jibun_name).replace(/^\S+\s+\S+[시군구]\s+/, ''))}</span>` : ''}
         </button>`).join('')
         : `<div class="ps-msg">${navigator.onLine === false ? '인터넷 연결을 확인해 주세요.' : failed ? '검색이 잠시 안 돼요. 장소 이름을 직접 입력해도 돼요.' : '검색 결과가 없어요. 직접 입력해도 돼요.'}</div>`;
     };
